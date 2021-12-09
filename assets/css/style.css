@@ -17,6 +17,7 @@ header {
 }
 #highScoresLink {
     color: purple;
+    font-size: 20px;
 }
 #highScoresLink a {
     color: inherit;
@@ -25,6 +26,7 @@ header {
 #timer {
     float: right;
     color: purple;
+    font-size: 20px;
 }
 #mainSection {
     text-align: center;

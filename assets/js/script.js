@@ -24,69 +24,56 @@ var fail = false;
 const questions = [QuestionOne, QuestionTwo, QuestionThree, QuestionFour, QuestionFive];
 var questionIndex = 0;
 var wasCorrect = false;
-//Will use this variable numerous times
+//Will use these variables numerous times
 const mainSection = document.getElementById("mainSection");
 
-//When the initial start quiz button is clicked or the go back button is clicked
+//When the Start Quiz button is clicked
 function StartQuizButton() {
     timer = 60;
     StartTimer();
     questions[questionIndex]();
 }
 
-function QuestionOne() {
-    DisplayQuestionsAndAnswers(question1, question1Answers);
-}
-
-function QuestionTwo() {
-    DisplayQuestionsAndAnswers(question2, question2Answers)
-    DisplayScore();
-}
-
-function QuestionThree() {
-    DisplayQuestionsAndAnswers(question3, question3Answers)
-    DisplayScore();
-}
-
-function QuestionFour() {
-    DisplayQuestionsAndAnswers(question4, question4Answers)
-    DisplayScore();
-}
-
-function QuestionFive() {
-    DisplayQuestionsAndAnswers(question5, question5Answers)
-    DisplayScore();
-}
-
-function DisplayScore() {
-    var displayString = "";
-    displayString += "<hr><span class='score'>Score: " + score;
-    if (wasCorrect) {
-        displayString += "<br><br>Correct!";
-        wasCorrect = false;
-    }
-    else {
-        displayString += "<br><br>Incorrect! 10 seconds were subtracted";
-    }
-    document.getElementById("scoreSection").innerHTML = displayString;
-    document.querySelector("#scoreSection").setAttribute("style", "text-align: center; color: purple; font-size: 25px;");
-}
-
 //Handles the timer
 function StartTimer() {
-    document.querySelector("#timer").setAttribute("style", "animation: blinks 1s infinite;");
-    timerControl = setInterval(TimerControl, 1000);
+    document.querySelector("#timer").setAttribute("style", "animation: blinks 1s infinite;");//Blink animation start
+    timerControl = setInterval(TimerControl, 1000);//Every Second call TimerControl()
 }
 
 //Function for the above setInterval method
 function TimerControl() {
     if (timer <= 0) {
-        clearInterval(timerControl);
-        document.querySelector("#timer").setAttribute("style", "animation: none;");
+        clearInterval(timerControl);//Stop updating
+        document.querySelector("#timer").setAttribute("style", "animation: none;");//Stop animation
         OutOfTime();
     }
     document.getElementById("timer").innerHTML = "Time: " + timer;
     timer--;
+}
+
+//First Question, doesn't display the score since no score is possible until at least 1 answer is chosen
+function QuestionOne() {
+    DisplayQuestionsAndAnswers(question1, question1Answers);
+}
+//Second Question
+function QuestionTwo() {
+    DisplayQuestionsAndAnswers(question2, question2Answers)
+    DisplayScore();
+}
+//Third Question
+function QuestionThree() {
+    DisplayQuestionsAndAnswers(question3, question3Answers)
+    DisplayScore();
+}
+//Fourth Question
+function QuestionFour() {
+    DisplayQuestionsAndAnswers(question4, question4Answers)
+    DisplayScore();
+}
+//Fifth Question
+function QuestionFive() {
+    DisplayQuestionsAndAnswers(question5, question5Answers)
+    DisplayScore();
 }
 
 //Displays the questions and answers
@@ -103,6 +90,21 @@ function DisplayQuestionsAndAnswers(question, answers) {
         document.querySelectorAll(".buttons")[i].setAttribute("style", "display: block; font-size: 20px;");
     }
     document.querySelector(".buttonBox").setAttribute("style", "margin: 0; position: relative; left: 47%");
+}
+
+//Displays the current score
+function DisplayScore() {
+    var displayString = "";
+    displayString += "<hr><span class='score'>Score: " + score;
+    if (wasCorrect) {
+        displayString += "<br><br>Correct!";
+        wasCorrect = false;
+    }
+    else {
+        displayString += "<br><br>Incorrect! 10 seconds were subtracted";
+    }
+    document.getElementById("scoreSection").innerHTML = displayString;
+    document.querySelector("#scoreSection").setAttribute("style", "text-align: center; color: purple; font-size: 25px;");
 }
 
 //Button clicked events
@@ -123,6 +125,7 @@ function Button4Clicked() {
     CheckAnswer();
 }
 
+//After a button is clicked, check if they got the right answer and move on to the next question
 function CheckAnswer() {
     var answer = CheckButtons();
     if (answerSheet[questionIndex] === answer) {
@@ -132,7 +135,7 @@ function CheckAnswer() {
         wasCorrect = true;
         if (questionIndex >= 5) {
             DisplayScore();
-            FinalScoreScreen(false, false);
+            FinalScoreScreen(false);
         }
         else {
             questions[questionIndex]();
@@ -144,7 +147,7 @@ function CheckAnswer() {
         questionIndex++;
         if (questionIndex >= 5) {
             DisplayScore();
-            FinalScoreScreen(false, false);
+            FinalScoreScreen(false);
         }
         else {
             questions[questionIndex]();
@@ -152,6 +155,7 @@ function CheckAnswer() {
     }
 }
 
+//Returns the index of which button was clicked and resets the button values
 function CheckButtons() {
     if (button1) {
         button1 = false;
@@ -183,11 +187,13 @@ function CheckButtons() {
     }
 }
 
+//Skip to final score screen with parameter indicating we got there because we are out of time
 function OutOfTime() {
-    FinalScoreScreen(true, false);
+    FinalScoreScreen(true);
 }
 
-function FinalScoreScreen(outOfTime, invalidInput) {
+//Show the final score and allow a user to enter their initials
+function FinalScoreScreen(outOfTime) {
     clearInterval(timerControl); //stop timer
     document.querySelector("#timer").setAttribute("style", "animation: none;"); //stop animation
     document.getElementById("scoreSection").innerHTML = "";
@@ -208,6 +214,7 @@ function FinalScoreScreen(outOfTime, invalidInput) {
     document.querySelector("#submitButton").setAttribute("style", "background-color: purple; color: white; border: none;");
 }
 
+//Once initials are submitted, check the input and if valid, add to the high scores list
 function InitialsSubmitted() {
     var form = document.getElementById("initialsForm");
     var formData = new FormData(form);
@@ -223,12 +230,14 @@ function InitialsSubmitted() {
     }
 }
 
+//Regex
 function CheckInput(input) {
     //regex ^[A-Z]{2,3}$
     // 2-3 uppercase characters
     return /^[A-Z]{2,3}$/.test(input);
 }
 
+//Show the high scores and allow the user to clear it, or start the quiz over
 function HighScoresScreen() {
     clearInterval(timerControl); //stop timer if running
     document.querySelector("#timer").setAttribute("style", "animation: none;"); //stop animation if running
@@ -245,13 +254,21 @@ function HighScoresScreen() {
     mainSection.innerHTML = displayString;
 }
 
+//Prepare the quiz to start over
 function ResetEverything() {
     score = 0;
     questionIndex = 0;
     wasCorrect = false;
-    StartQuizButton();
+    document.getElementById("scoreSection").innerHTML = "";
+    var displayString = "";
+    displayString += "<span>Coding Quiz Challenge</span>";
+    displayString += "<p>Try to answer the following code-related questions within the time<br>";
+    displayString += "limit. Keep in mind that incorrect answers will penalize your score/time<br>";
+    displayString += "by ten seconds!</p><button onclick='StartQuizButton()'> Start Quiz</button>";
+    document.getElementById("mainSection").innerHTML = displayString;
 }
 
+//Get rid of the high scores and reload the screen
 function ClearScores() {
     highScores = [];
     HighScoresScreen();
