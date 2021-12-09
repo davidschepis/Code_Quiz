@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+    <header>
+        <div id="highScoresLinkHolder">
+            <span id="highScoresLink">
+                <a href="#" onclick="HighScoresScreen()">
+                    View Highscores
+                </a>
+            </span>
+        </div>
+        <div id="timerHolder">
+            <span id="timer">
+                Time: 0
+            </span>
+        </div>
+    </header>
+    <main>
+        <section id="mainSection">
+            <span>Coding Quiz Challenge</span>
+            <p>Try to answer the following code-related questions within the time<br>
+                limit. Keep in mind that incorrect answers will penalize your score/time<br>
+                by ten seconds!
+            </p>
+            <button onclick="StartQuizButton()">
+                Start Quiz
+            </button>
+        </section>
+        <section id="scoreSection"></section>
+    </main>
+    <script src="./assets/js/script.js"></script>
+</body>
+
+</html>

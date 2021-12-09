@@ -1,0 +1,51 @@
+:root {
+    --textColor: purple;
+}
+* {
+    font-family: Helvetica, sans-serif
+}
+header {
+    display: flex;
+    flex-wrap: wrap;
+    height: 200px;
+}
+#highScoresLinkHolder {
+    flex: 1;
+}
+#timerHolder {
+    flex: 1;
+}
+#highScoresLink {
+    color: purple;
+}
+#highScoresLink a {
+    color: inherit;
+    text-decoration: none;
+}
+#timer {
+    float: right;
+    color: purple;
+}
+#mainSection {
+    text-align: center;
+}
+#mainSection span {
+    font-size: 20px;
+    font-weight: bold;
+}
+#mainSection button {
+    background-color: var(--textColor);
+    color: white;
+    border: none;
+}
+
+
+
+/* Timer animation */
+@keyframes blinks {
+    0%{color: var(--textColor);}
+    50%{color: var(--textColor);}
+    65%{color: transparent;}
+    99%{color:transparent; }
+    100%{color: var(--textColor);}
+}
