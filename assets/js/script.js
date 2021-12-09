@@ -66,7 +66,7 @@ function DisplayScore() {
         wasCorrect = false;
     }
     else {
-        displayString += "<br><br>Incorrect!";
+        displayString += "<br><br>Incorrect! 10 seconds were subtracted";
     }
     document.getElementById("scoreSection").innerHTML = displayString;
     document.querySelector("#scoreSection").setAttribute("style", "text-align: center; color: purple; font-size: 25px;");
@@ -140,7 +140,7 @@ function CheckAnswer() {
     }
     else {
         //wrong
-        score -= 10;
+        timer -= 10;
         questionIndex++;
         if (questionIndex >= 5) {
             DisplayScore();
