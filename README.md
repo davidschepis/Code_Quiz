@@ -7,4 +7,4 @@ https://github.com/davidschepis/Homework4
 
 https://davidschepis.github.io/Homework4/
 
-!(screenshot.png)
+![Screenshot](screenshot.png)
