@@ -270,6 +270,7 @@ function CheckInput(input) {
 
 //Show the high scores and allow the user to clear it, or start the quiz over
 function HighScoresScreen() {
+    scoreSection.innerHTML = "";
     clearInterval(timerControl); //stop timer if running
     document.querySelector("#timer").setAttribute("style", "animation: none;"); //stop animation if running
     var displayString = "";
