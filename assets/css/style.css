@@ -16,7 +16,7 @@ header {
     flex: 1;
 }
 #highScoresLink {
-    color: purple;
+    color: var(--textColor);
     font-size: 20px;
 }
 #highScoresLink a {
@@ -25,7 +25,7 @@ header {
 }
 #timer {
     float: right;
-    color: purple;
+    color: var(--textColor);
     font-size: 20px;
 }
 #mainSection {
@@ -40,8 +40,6 @@ header {
     color: white;
     border: none;
 }
-
-
 
 /* Timer animation */
 @keyframes blinks {

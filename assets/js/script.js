@@ -5,10 +5,11 @@ const question2 = "Which javascript function returns the length of an array?";
 const question2Answers = ["Length()", "size", "Size()", "length"];
 const question3 = "Which of the following is not a data type in Javascript?";
 const question3Answers = ["Vector", "String", "Number", "Null"];
-const question4 = "Where is the correct place to insert Javascript?";
-const question4Answers = ["Div", "Stylesheet", "body", "title"];
+const question4 = "Which of the following is not a Javascript Keyword?";
+const question4Answers = ["goto", "let", "define", "const"];
 const question5 = "Which of the following is a semantic element?";
 const question5Answers = ["body", "section", "div", "span"];
+
 const answerSheet = [1, 3, 0, 2, 1];
 
 //Global variables
@@ -20,14 +21,14 @@ var button1 = false;
 var button2 = false;
 var button3 = false;
 var button4 = false;
-var fail = false;
 const questions = [QuestionOne, QuestionTwo, QuestionThree, QuestionFour, QuestionFive];
 var questionIndex = 0;
 var wasCorrect = false;
 //Will use these variables numerous times
 const mainSection = document.getElementById("mainSection");
+const scoreSection = document.getElementById("scoreSection");
 
-//When the Start Quiz button is clicked
+//When the Start Quiz button is clicked, start the timer and goto a question
 function StartQuizButton() {
     timer = 60;
     StartTimer();
@@ -45,7 +46,7 @@ function TimerControl() {
     if (timer <= 0) {
         clearInterval(timerControl);//Stop updating
         document.querySelector("#timer").setAttribute("style", "animation: none;");//Stop animation
-        OutOfTime();
+        OutOfTime(); //break out of normal flow
     }
     document.getElementById("timer").innerHTML = "Time: " + timer;
     timer--;
@@ -94,16 +95,27 @@ function DisplayQuestionsAndAnswers(question, answers) {
 
 //Displays the current score
 function DisplayScore() {
-    var displayString = "";
-    displayString += "<hr><span class='score'>Score: " + score;
+    scoreSection.innerHTML = "";
+    var hr = document.createElement("hr");
+    var span = document.createElement("span");
+    var br1 = document.createElement("br");
+    var br2 = document.createElement("br");
+    var innerSpan = document.createElement("span");
+    span.class = "score";
+    span.textContent = "Score: " + score;
+    scoreSection.appendChild(hr);
+    scoreSection.appendChild(span);
+    scoreSection.appendChild(br1);
+    scoreSection.appendChild(br2);
     if (wasCorrect) {
-        displayString += "<br><br>Correct!";
+        innerSpan.textContent = "Correct!";
+        scoreSection.appendChild(innerSpan);
         wasCorrect = false;
     }
     else {
-        displayString += "<br><br>Incorrect! 10 seconds were subtracted";
+        innerSpan.textContent = "Incorrect! 10 seconds were subtracted";
+        scoreSection.appendChild(innerSpan);
     }
-    document.getElementById("scoreSection").innerHTML = displayString;
     document.querySelector("#scoreSection").setAttribute("style", "text-align: center; color: purple; font-size: 25px;");
 }
 
@@ -133,25 +145,18 @@ function CheckAnswer() {
         score += 10;
         questionIndex++;
         wasCorrect = true;
-        if (questionIndex >= 5) {
-            DisplayScore();
-            FinalScoreScreen(false);
-        }
-        else {
-            questions[questionIndex]();
-        }
     }
     else {
         //wrong
         timer -= 10;
         questionIndex++;
-        if (questionIndex >= 5) {
-            DisplayScore();
-            FinalScoreScreen(false);
-        }
-        else {
-            questions[questionIndex]();
-        }
+    }
+    if (questionIndex >= 5) {
+        DisplayScore();
+        FinalScoreScreen(false);
+    }
+    else {
+        questions[questionIndex]();
     }
 }
 
@@ -196,41 +201,67 @@ function OutOfTime() {
 function FinalScoreScreen(outOfTime) {
     clearInterval(timerControl); //stop timer
     document.querySelector("#timer").setAttribute("style", "animation: none;"); //stop animation
-    document.getElementById("scoreSection").innerHTML = "";
-    var displayString = "";
+    scoreSection.innerHTML = "";
+    mainSection.innerHTML = "";
+    var section = document.createElement("section");
+    var h3 = document.createElement("h3");
+    var div = document.createElement("div");
+    var span = document.createElement("span");
+    var form = document.createElement("form");
+    var input1 = document.createElement("input");
+    var input2 = document.createElement("input");
+    var h1 = document.createElement("h1");
     if (outOfTime) {
-        displayString += "<h1>You ran out of time!<h1>";
+        h1.textContent = "You ran out of time!";
     }
     else {
-        displayString += "<h1>All done!<h1>";
+        h1.textContent = "All done!";
     }
-    displayString += "<h3>Your final score is " + score + "</h3>";
-    displayString += "<div id=formHolder>";
-    displayString += "<span>Enter Initials</span>";
-    displayString += "<form action='#' onsubmit='InitialsSubmitted();return false' id='initialsForm'>"
-    displayString += "<input type='text' name='initials'> <input type='submit' id='submitButton'></form>";
-    displayString += "</div>";
-    mainSection.innerHTML = displayString;
-    document.querySelector("#submitButton").setAttribute("style", "background-color: purple; color: white; border: none;");
+    h3.id = "finalScoreHeader";
+    h3.textContent = "Your final score is: " + score;
+    h3.setAttribute("style", "margin: 0; padding: 0;");
+    div.id = "formHolder";
+    span.textContent = "Enter Initials";
+    form.action = "#";
+    form.onsubmit = InitialsSubmitted;
+    form.id = "initialsForm";
+    input1.type = "text";
+    input1.name = "initials";
+    input2.type = "submit";
+    input2.name = "submitButton";
+    input2.setAttribute("style", "background-color: purple; color: white; border: none;");
+    mainSection.appendChild(h1);
+    mainSection.appendChild(section);
+    section.appendChild(h3);
+    section.appendChild(div);
+    div.appendChild(span);
+    form.appendChild(input1);
+    form.appendChild(input2);
+    div.appendChild(form);
 }
 
 //Once initials are submitted, check the input and if valid, add to the high scores list
-function InitialsSubmitted() {
+function InitialsSubmitted(event) {
+    event.preventDefault();
     var form = document.getElementById("initialsForm");
     var formData = new FormData(form);
     var input = formData.get("initials");
     var isValid = CheckInput(input);
     if (!isValid) {
-        document.getElementById("scoreSection").innerHTML = "<hr><span>Please enter 2-3 uppercase letters</span>";
+        var hr = document.createElement("hr");
+        var span = document.createElement("span");
+        span.textContent = "Please enter 2-3 uppercase letters";
+        scoreSection.appendChild(hr);
+        scoreSection.appendChild(span);
     }
     else {
-        document.getElementById("scoreSection").innerHTML = "";
+        scoreSection.innerHTML = "";
         highScores.push([input, score]);
         HighScoresScreen();
     }
 }
 
-//Regex
+//Regex shenanigans
 function CheckInput(input) {
     //regex ^[A-Z]{2,3}$
     // 2-3 uppercase characters
@@ -245,7 +276,7 @@ function HighScoresScreen() {
     displayString += "<h1>High Scores</h1>";
     displayString += "<div id='highScoreList'>";
     for (var i = 0; i < highScores.length; i++) {
-        displayString += "<span class = 'scoreSpan'>" + (i+1) + ". " + highScores[i][0] + "    " + highScores[i][1] + "</span><br>"
+        displayString += "<span class = 'scoreSpan'>" + (i + 1) + ". " + highScores[i][0] + "    " + highScores[i][1] + "</span><br>"
     }
     displayString += "</div>";
     displayString += "<div id='highScoreButtonHolder'>";
@@ -259,13 +290,18 @@ function ResetEverything() {
     score = 0;
     questionIndex = 0;
     wasCorrect = false;
-    document.getElementById("scoreSection").innerHTML = "";
-    var displayString = "";
-    displayString += "<span>Coding Quiz Challenge</span>";
-    displayString += "<p>Try to answer the following code-related questions within the time<br>";
-    displayString += "limit. Keep in mind that incorrect answers will penalize your score/time<br>";
-    displayString += "by ten seconds!</p><button onclick='StartQuizButton()'> Start Quiz</button>";
-    document.getElementById("mainSection").innerHTML = displayString;
+    scoreSection.innerHTML = "";
+    mainSection.innerHTML = "";
+    var span = document.createElement("span");
+    var p = document.createElement("p");
+    var button = document.createElement("button");
+    span.textContent = "Coding Quiz Challenge";
+    p.innerHTML = "Try to answer the following code-related questions within the time<br>limit. Keep in mind that incorrect answers will penalize your score/time<br>by ten seconds!";
+    button.onclick = StartQuizButton;
+    button.textContent = "Start Quiz";
+    mainSection.appendChild(span);
+    mainSection.appendChild(p);
+    mainSection.appendChild(button);
 }
 
 //Get rid of the high scores and reload the screen
