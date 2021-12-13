@@ -5,7 +5,7 @@ const question2 = "Which javascript function returns the length of an array?";
 const question2Answers = ["Length()", "size", "Size()", "length"];
 const question3 = "Which of the following is not a data type in Javascript?";
 const question3Answers = ["Vector", "String", "Number", "Null"];
-const question4 = "Which of the following is not a Javascript Keyword?";
+const question4 = "Which of the following is not a vanilla Javascript Keyword?";
 const question4Answers = ["goto", "let", "define", "const"];
 const question5 = "Which of the following is a semantic element?";
 const question5Answers = ["body", "section", "div", "span"];
@@ -58,22 +58,22 @@ function QuestionOne() {
 }
 //Second Question
 function QuestionTwo() {
-    DisplayQuestionsAndAnswers(question2, question2Answers)
+    DisplayQuestionsAndAnswers(question2, question2Answers);
     DisplayScore();
 }
 //Third Question
 function QuestionThree() {
-    DisplayQuestionsAndAnswers(question3, question3Answers)
+    DisplayQuestionsAndAnswers(question3, question3Answers);
     DisplayScore();
 }
 //Fourth Question
 function QuestionFour() {
-    DisplayQuestionsAndAnswers(question4, question4Answers)
+    DisplayQuestionsAndAnswers(question4, question4Answers);
     DisplayScore();
 }
 //Fifth Question
 function QuestionFive() {
-    DisplayQuestionsAndAnswers(question5, question5Answers)
+    DisplayQuestionsAndAnswers(question5, question5Answers);
     DisplayScore();
 }
 
@@ -87,8 +87,8 @@ function DisplayQuestionsAndAnswers(question, answers) {
     }
     displayString += "</div>";
     mainSection.innerHTML = displayString;
-    for (var i = 0; i < document.querySelectorAll(".buttons").length; i++) {
-        document.querySelectorAll(".buttons")[i].setAttribute("style", "display: block; font-size: 20px;");
+    for (var x = 0; x < document.querySelectorAll(".buttons").length; x++) {
+        document.querySelectorAll(".buttons")[x].setAttribute("style", "display: block; font-size: 20px;");
     }
     document.querySelector(".buttonBox").setAttribute("style", "margin: 0; position: relative; left: 47%");
 }
@@ -242,6 +242,7 @@ function FinalScoreScreen(outOfTime) {
 
 //Once initials are submitted, check the input and if valid, add to the high scores list
 function InitialsSubmitted(event) {
+    scoreSection.innerHTML = "";
     event.preventDefault();
     var form = document.getElementById("initialsForm");
     var formData = new FormData(form);
@@ -277,7 +278,7 @@ function HighScoresScreen() {
     displayString += "<h1>High Scores</h1>";
     displayString += "<div id='highScoreList'>";
     for (var i = 0; i < highScores.length; i++) {
-        displayString += "<span class = 'scoreSpan'>" + (i + 1) + ". " + highScores[i][0] + "    " + highScores[i][1] + "</span><br>"
+        displayString += "<span class = 'scoreSpan'>" + (i + 1) + ". " + highScores[i][0] + "    " + highScores[i][1] + "</span><br>";
     }
     displayString += "</div>";
     displayString += "<div id='highScoreButtonHolder'>";
