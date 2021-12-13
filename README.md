@@ -10,4 +10,4 @@ https://github.com/davidschepis/Homework4
 
 https://davidschepis.github.io/Homework4/
 
-![Screenshot](screenshot.png)
+![Screenshot](assets/images/screenshot.png)
